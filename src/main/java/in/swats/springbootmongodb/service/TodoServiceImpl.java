@@ -6,6 +6,8 @@ import in.swats.springbootmongodb.repository.TodoRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +21,7 @@ public class TodoServiceImpl implements TodoService{
     TodoRepository todoRepository;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<TodoDTO> getAllTodos() {
         List<TodoDTO> todos =  todoRepository.findAll();
         if(todos.size() > 0) {
