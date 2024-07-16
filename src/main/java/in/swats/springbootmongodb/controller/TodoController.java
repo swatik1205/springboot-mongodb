@@ -4,9 +4,12 @@ import in.swats.springbootmongodb.exception.TodoCollectionException;
 import in.swats.springbootmongodb.model.TodoDTO;
 import in.swats.springbootmongodb.service.TodoService;
 import jakarta.validation.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,12 +18,16 @@ import java.util.List;
 @RequestMapping("/todomanageapi")
 public class TodoController {
 
+    Logger logger = LoggerFactory.getLogger(TodoController.class);
+
     @Autowired
     private TodoService todoService;
 
     @GetMapping("/todos")
     public ResponseEntity<?> getAllTodos() {
+        logger.trace("Starting the getAllTodos");
         List<TodoDTO> todos = todoService.getAllTodos();
+        logger.info("Fetching the getAllTodos");
         return new ResponseEntity<>(todos, todos.size() > 0 ?HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
